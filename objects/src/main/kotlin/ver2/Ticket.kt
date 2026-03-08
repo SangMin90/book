@@ -1,3 +1,3 @@
-package ver1
+package ver2
 
 class Ticket(val fee: Long)

@@ -1,5 +1,10 @@
-package ver1
+package ver2
 
 class TicketSeller(
-    val ticketOffice: TicketOffice,
-)
+    private val ticketOffice: TicketOffice,
+) {
+
+    fun sellTo(audience: Audience) {
+        ticketOffice.sellTicketTo(audience)
+    }
+}

@@ -1,8 +1,8 @@
-package ver1
+package ver2
 
 class Bag(
-    var amount: Long,
-    val invitation: Invitation? = null,
+    private var amount: Long,
+    private val invitation: Invitation? = null,
     var ticket: Ticket? = null
 ) {
 

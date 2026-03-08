@@ -1,5 +1,16 @@
-package ver1
+package ver2
 
 class Audience(
-    val bag: Bag
-)
+    private val bag: Bag
+) {
+    fun buy(ticket: Ticket): Long {
+        return if (bag.hasInvitation) {
+            bag.ticket = ticket
+            0L
+        } else {
+            bag.minusAmount(ticket.fee)
+            bag.ticket = ticket
+            ticket.fee
+        }
+    }
+}
