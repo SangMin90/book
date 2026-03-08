@@ -9,6 +9,9 @@ class TicketOffice(
     val ticket: Ticket
         get() = tickets.removeFirst()
 
+    val ticketCount: Int
+        get() = tickets.size
+
     fun minusAmount(amount: Long): Long {
         this.amount -= amount
 

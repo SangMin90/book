@@ -1,5 +1,5 @@
 package ver1
 
 class TicketSeller(
-    val ticketOfficer: TicketOffice,
+    val ticketOffice: TicketOffice,
 )

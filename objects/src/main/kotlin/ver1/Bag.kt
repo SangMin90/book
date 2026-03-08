@@ -2,8 +2,8 @@ package ver1
 
 class Bag(
     var amount: Long,
-    val invitation: Invitation?,
-    var ticket: Ticket?
+    val invitation: Invitation? = null,
+    var ticket: Ticket? = null
 ) {
 
     val hasInvitation: Boolean

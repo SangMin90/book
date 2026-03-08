@@ -4,9 +4,9 @@ class Theater(
     val ticketSeller: TicketSeller,
 ) {
 
-    fun enter(audience: Audience): Unit {
+    fun enter(audience: Audience) {
         val bag = audience.bag
-        val ticketOfficer = ticketSeller.ticketOfficer
+        val ticketOfficer = ticketSeller.ticketOffice
         if (bag.hasInvitation) {
             val ticket = ticketOfficer.ticket
             bag.ticket = ticket
