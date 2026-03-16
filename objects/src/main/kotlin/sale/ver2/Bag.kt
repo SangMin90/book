@@ -1,4 +1,4 @@
-package ver2
+package sale.ver2
 
 class Bag(
     private var amount: Long,

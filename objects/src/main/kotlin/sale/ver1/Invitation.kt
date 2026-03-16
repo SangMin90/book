@@ -1,4 +1,4 @@
-package ver2
+package sale.ver1
 
 import java.time.LocalDateTime
 

@@ -1,5 +1,6 @@
-package ver2
+package sale.ver2
 
+import sale.ver2.*
 import java.time.LocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals

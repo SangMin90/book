@@ -1,4 +1,4 @@
-package ver2
+package sale.ver2
 
 class TicketSeller(
     private val ticketOffice: TicketOffice,

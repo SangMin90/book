@@ -1,4 +1,4 @@
-package ver2
+package sale.ver2
 
 import io.mockk.mockk
 import io.mockk.verify

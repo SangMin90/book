@@ -1,4 +1,4 @@
-package ver1
+package sale.ver1
 
 class Theater(
     val ticketSeller: TicketSeller,

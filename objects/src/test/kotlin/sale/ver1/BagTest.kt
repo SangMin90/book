@@ -1,10 +1,13 @@
-package ver2
+package sale.ver1
 
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class BagTest {
-    
+
     private lateinit var sut: Bag
 
     @Test
@@ -13,7 +16,7 @@ class BagTest {
             amount = 10L,
         )
 
-        kotlin.test.assertFalse(sut.hasInvitation, "초대장이 없어야 합니다.")
+        assertFalse(sut.hasInvitation, "초대장이 없어야 합니다.")
     }
 
     @Test
@@ -23,7 +26,7 @@ class BagTest {
             invitation = Invitation(LocalDateTime.now()),
         )
 
-        kotlin.test.assertTrue(sut.hasInvitation, "초대장이 있어야 합니다.")
+        assertTrue(sut.hasInvitation, "초대장이 있어야 합니다.")
     }
 
     @Test
@@ -32,9 +35,9 @@ class BagTest {
             amount = 10L,
         )
 
-        kotlin.test.assertFalse(sut.hasTicket, "초기에는 티켓이 없어야 합니다.")
+        assertFalse(sut.hasTicket, "초기에는 티켓이 없어야 합니다.")
     }
-
+    
     @Test
     fun `돈을 차감하면 amount가 감소한다_minusAmount`() {
         sut = Bag(
@@ -43,7 +46,7 @@ class BagTest {
 
         val amount = sut.minusAmount(5L)
 
-        kotlin.test.assertEquals(5L, amount)
+        assertEquals(5L, amount)
     }
 
     @Test
@@ -54,7 +57,7 @@ class BagTest {
 
         val amount = sut.plusAmount(5L)
 
-        kotlin.test.assertEquals(15L, amount)
+        assertEquals(15L, amount)
     }
 
     @Test
@@ -69,6 +72,6 @@ class BagTest {
         sut.minusAmount(ticket.fee)
         sut.ticket = ticket
 
-        kotlin.test.assertTrue(sut.hasTicket, "넣은 티켓이 있어야 합니다.")
+        assertTrue(sut.hasTicket, "넣은 티켓이 있어야 합니다.")
     }
 }

@@ -1,4 +1,4 @@
-package ver2
+package sale.ver2
 
 class Audience(
     private val bag: Bag
