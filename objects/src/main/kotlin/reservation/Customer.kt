@@ -1,2 +1,3 @@
-package reservation 
+package reservation
 
+class Customer
