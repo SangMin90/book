@@ -7,7 +7,7 @@ import reservation.discount.condition.DiscountCondition
 class PercentDiscountPolicy(
     private val percent: Double,
     vararg discountCondition: DiscountCondition
-): DefaultDiscountPolicy(*discountCondition) {
+) : DefaultDiscountPolicy(*discountCondition) {
 
     override fun getDiscountAmount(
         screening: Screening

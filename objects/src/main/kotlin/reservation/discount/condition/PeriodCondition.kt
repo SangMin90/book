@@ -8,7 +8,7 @@ class PeriodCondition(
     private val dayOfWeek: DayOfWeek,
     private val startTime: LocalTime,
     private val endTime: LocalTime,
-): DiscountCondition {
+) : DiscountCondition {
 
     override fun isSatisfied(
         screening: Screening

@@ -4,7 +4,7 @@ import reservation.Screening
 
 class SequenceCondition(
     private val sequence: Int
-): DiscountCondition {
+) : DiscountCondition {
 
     override fun isSatisfied(screening: Screening): Boolean {
         return screening.isSequence(this.sequence)

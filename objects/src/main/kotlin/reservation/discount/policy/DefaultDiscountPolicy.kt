@@ -6,7 +6,7 @@ import reservation.discount.condition.DiscountCondition
 
 abstract class DefaultDiscountPolicy(
     vararg discountCondition: DiscountCondition
-): DiscountPolicy {
+) : DiscountPolicy {
     private val conditions: List<DiscountCondition> =
         discountCondition.toList()
 
@@ -15,7 +15,7 @@ abstract class DefaultDiscountPolicy(
     ): Money {
 
         val isSatisfied: Boolean = conditions.any {
-            condition -> condition.isSatisfied(screening)
+            it.isSatisfied(screening)
         }
 
         return if (isSatisfied) {

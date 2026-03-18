@@ -7,7 +7,7 @@ import reservation.discount.condition.DiscountCondition
 class AmountDiscountPolicy(
     private val discountAmount: Money,
     vararg discountCondition: DiscountCondition
-): DefaultDiscountPolicy(*discountCondition) {
+) : DefaultDiscountPolicy(*discountCondition) {
 
     override fun getDiscountAmount(
         screening: Screening
