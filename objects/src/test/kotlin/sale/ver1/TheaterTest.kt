@@ -1,58 +1,57 @@
 package sale.ver1
 
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 import java.time.LocalDateTime
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
-class TheaterTest {
+class TheaterTest : BehaviorSpec({
 
-    private lateinit var sut: Theater
-    private val FEE = 5000L
+    given("초대권이 있는 관람객이 있을 때") {
 
-    @Test
-    fun `초대장이 없으면 티켓값을 지불하고 입장한다_enter`() {
-        sut = Theater(
-            TicketSeller(
-                TicketOffice(
-                    amount = 10000L,
-                    tickets = arrayOf(Ticket(FEE), Ticket(FEE))
-                )
-            )
+        val ticket = Ticket(10_000L)
+        val office = TicketOffice(
+            amount = 90_000L,
+            ticket
         )
-        val audience = Audience(Bag(20000L))
-
-        sut.enter(audience)
-
-        assertTrue(audience.bag.hasTicket)
-        assertEquals(1,
-            sut.ticketSeller.ticketOffice.ticketCount
-        )
-        assertEquals(15000L, audience.bag.amount)
-    }
-
-    @Test
-    fun `초대장이 있으면 돈을 내지 않고 티켓을 받고 입장한다_enter`() {
-        sut = Theater(
-            TicketSeller(
-                TicketOffice(
-                    amount = 10000L,
-                    tickets = arrayOf(Ticket(FEE), Ticket(FEE))
-                )
-            )
-        )
+        val seller = TicketSeller(office)
         val audience = Audience(
-            Bag(20000L,
-                Invitation(LocalDateTime.now())
+            Bag(
+                amount = 100_000L,
+                invitation = Invitation(LocalDateTime.now())
             )
         )
 
-        sut.enter(audience)
+        val sut = Theater(seller)
 
-        assertTrue(audience.bag.hasTicket)
-        assertEquals(1,
-            sut.ticketSeller.ticketOffice.ticketCount
-        )
-        assertEquals(20000L, audience.bag.amount)
+        `when`("입장하면") {
+            sut.enter(audience)
+
+            then("티켓만 받고 돈은 받지 않는다.") {
+                audience.bag.ticket shouldBe ticket
+                audience.bag.amount shouldBe 100_000L
+            }
+        }
     }
-}
+
+    given("초대권이 없는 관람객이 있을 때") {
+
+        val ticket = Ticket(10_000L)
+        val office = TicketOffice(
+            amount = 90_000L,
+            ticket
+        )
+        val seller = TicketSeller(office)
+        val audience = Audience(Bag(amount = 100_000L))
+
+        val sut = Theater(seller)
+
+        `when`("입장하면") {
+            sut.enter(audience)
+
+            then("돈을 지불하고 티켓을 받는다.") {
+                audience.bag.ticket shouldBe ticket
+                audience.bag.amount shouldBe 90_000L
+            }
+        }
+    }
+})

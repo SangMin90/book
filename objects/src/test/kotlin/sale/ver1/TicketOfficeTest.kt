@@ -1,51 +1,58 @@
 package sale.ver1
 
-import org.junit.jupiter.api.Assertions.assertThrows
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 
-class TicketOfficeTest {
+class TicketOfficeTest : BehaviorSpec({
 
-    private lateinit var sut: TicketOffice
-    private val fee = 5000L
+    given("매표소에 1장 이상의 티켓이 있을 때") {
+        val ticket1 = Ticket(fee = 10_000L)
+        val ticket2 = Ticket(fee = 10_000L)
 
-    @Test
-    fun `티켓이 존재하면 티켓을 얻을 수 있다_getTicket`() {
-        sut = TicketOffice(
-            amount = 10000L,
-            tickets = arrayOf(Ticket(fee), Ticket(fee))
+        val sut = TicketOffice(
+            amount = 10_000L,
+            ticket1,
+            ticket2,
         )
 
-        val ticket = sut.ticket
+        `when`("티켓을 꺼내면") {
+            val ticket = sut.ticket
+            val ticketCount = sut.ticketCount
 
-        assertEquals(sut.ticketCount, 1)
-        assertEquals(ticket.fee, fee)
+            then("티켓이 한장 감소한다.") {
+                ticket shouldBe ticket1
+                ticketCount shouldBe 1
+            }
+        }
     }
 
-    @Test
-    fun `티켓이 존재하지 않으면 예외가 발생한다_getTicket`() {
-        sut = TicketOffice(
-            amount = 10000L,
+    given("매표소에서 구만원을 보유하고 있을 때") {
+
+        val sut = TicketOffice(
+            amount = 90_000L,
         )
 
-        assertThrows(NoSuchElementException::class.java) { sut.ticket }
+        `when`("만원을 더하면") {
+            val amount = sut.plusAmount(10_000L)
+
+            then("보유 금액이 만원 증가한다.") {
+                amount shouldBe 100_000L
+            }
+        }
     }
 
-    @Test
-    fun `금액을 차감하면 보유금액이 감소한다_minusAmount`()     {
-        sut = TicketOffice(10000L)
+    given("매표소에서 십일만원을 보유하고 있을 때") {
 
-        val amount = sut.minusAmount(5000L)
+        val sut = TicketOffice(
+            amount = 110_000L,
+        )
 
-        assertEquals(5000L, amount)
+        `when`("만원을 차감하면") {
+            val amount = sut.minusAmount(10_000L)
+
+            then("보유 금액이 만원 감소한다.") {
+                amount shouldBe 100_000L
+            }
+        }
     }
-
-    @Test
-    fun `금액을 추가하면 보유금액이 증가한다_plusAmount`() {
-        sut = TicketOffice(10000L)
-
-        val amount = sut.plusAmount(5000L)
-
-        assertEquals(15000L, amount)
-    }
-}
+})

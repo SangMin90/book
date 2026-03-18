@@ -1,74 +1,88 @@
 package sale.ver2
 
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 import java.time.LocalDateTime
 
-class BagTest {
-    
-    private lateinit var sut: Bag
+class BagTest : BehaviorSpec({
 
-    @Test
-    fun `초대장이 없으면 false를 반환한다_hasInvitation`() {
-        sut = Bag(
-            amount = 10L,
+    given("가방에 티켓이 있을 때") {
+        val sut = Bag(
+            amount = 1L,
+            ticket = Ticket(10_000L)
         )
 
-        kotlin.test.assertFalse(sut.hasInvitation, "초대장이 없어야 합니다.")
+        `when`("티켓 소유 여부를 검사하면") {
+            val hasTicket = sut.hasTicket
+
+            then("true를 반환한다.") {
+                hasTicket shouldBe true
+            }
+        }
     }
 
-    @Test
-    fun `초대장이 있으면 true를 반환한다_hasInvitation`() {
-        sut = Bag(
-            amount = 10L,
-            invitation = Invitation(LocalDateTime.now()),
+    given("가방에 티켓이 없을 때") {
+        val sut = Bag(amount = 1L)
+
+        `when`("티켓 소유 여부를 검사하면") {
+            val hasTicket = sut.hasTicket
+
+            then("false를 반환한다.") {
+                hasTicket shouldBe false
+            }
+        }
+    }
+
+    given("가방에 초대장이 있을 때") {
+        val sut = Bag(
+            amount = 1L,
+            invitation = Invitation(
+                LocalDateTime.now()
+            )
         )
 
-        kotlin.test.assertTrue(sut.hasInvitation, "초대장이 있어야 합니다.")
+        `when`("초대장 소유 여부를 검사하면") {
+            val hasInvitation = sut.hasInvitation
+
+            then("true를 반환한다.") {
+                hasInvitation shouldBe true
+            }
+        }
     }
 
-    @Test
-    fun `초기에는 티켓이 없다_hasTicket`() {
-        sut = Bag(
-            amount = 10L,
-        )
+    given("가방에 초대장이 없을 때") {
+        val sut = Bag(amount = 1L)
 
-        kotlin.test.assertFalse(sut.hasTicket, "초기에는 티켓이 없어야 합니다.")
+        `when`("초대장 소유 여부를 검사하면") {
+            val hasInvitation = sut.hasInvitation
+
+            then("false를 반환한다.") {
+                hasInvitation shouldBe false
+            }
+        }
     }
 
-    @Test
-    fun `돈을 차감하면 amount가 감소한다_minusAmount`() {
-        sut = Bag(
-            amount = 10L,
-        )
+    given("가방에 구만원이 있을 때") {
+        val sut = Bag(90_000L)
 
-        val amount = sut.minusAmount(5L)
+        `when`("만원을 넣으면") {
+            val amount = sut.plusAmount(10_000L)
 
-        kotlin.test.assertEquals(5L, amount)
+            then("십만원이 된다.") {
+                amount shouldBe 100_000L
+            }
+        }
     }
 
-    @Test
-    fun `돈을 추가하면 amount가 증가한다_plusAmount`() {
-        sut = Bag(
-            amount = 10L,
-        )
+    given("가방에 십일만원이 있을 때") {
+        val sut = Bag(110_000L)
 
-        val amount = sut.plusAmount(5L)
+        `when`("만원을 차감하면") {
+            val amount = sut.minusAmount(10_000L)
 
-        kotlin.test.assertEquals(15L, amount)
+            then("십만원이 된다.") {
+                amount shouldBe 100_000L
+            }
+        }
     }
-
-    @Test
-    fun `티켓을 넣으면 true를 반환한다_hasTicket`() {
-        val ticket = Ticket(5L)
-        sut = Bag(
-            amount = 10L,
-            invitation = Invitation(LocalDateTime.now()),
-            null
-        )
-
-        sut.minusAmount(ticket.fee)
-        sut.ticket = ticket
-
-        kotlin.test.assertTrue(sut.hasTicket, "넣은 티켓이 있어야 합니다.")
-    }
-}
+})

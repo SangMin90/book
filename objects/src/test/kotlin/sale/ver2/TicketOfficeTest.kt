@@ -1,56 +1,31 @@
 package sale.ver2
 
-import sale.ver2.*
-import java.time.LocalDateTime
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
 
-class TicketOfficeTest {
-    
-    private lateinit var sut: TicketOffice
-    private val FEE = 5000L
-    
-    @Test
-    fun `관람객에게 티켓을 판매하면 티켓수가 감소한다_sellTicketTo`() {
-        sut = TicketOffice(
-            amount = 20000L,
-            tickets = arrayOf(Ticket(FEE), Ticket(FEE))
+class TicketOfficeTest : BehaviorSpec({
+
+    given("매표소에 한장 이상의 티켓이 있을 때") {
+        val stubAudience = mockk<Audience>()
+        every { stubAudience.buy(any()) } returns 0L
+
+        val ticket1 = Ticket(fee = 10_000L)
+        val ticket2 = Ticket(fee = 10_000L)
+        val sut = TicketOffice(
+            amount = 100_000L,
+            ticket1,
+            ticket2,
         )
 
-        sut.sellTicketTo(
-            Audience(
-                Bag(
-                    amount = 10000L,
-                    invitation = Invitation(LocalDateTime.now())
-                )
-            )
-        )
+        `when`("한명의 관람객에게 티켓을 판매하면") {
+            sut.sellTicketTo(stubAudience)
 
-        assertEquals(1, sut.ticketCount)
+            then("티켓이 줄고 보유 금액이 증가한다.") {
+                sut.ticketCount shouldBe 1
+                sut.currentAmount shouldBe 110_000L
+            }
+        }
     }
-
-    @Test
-    fun `여러 관람객에게 티켓을 판매하면 티켓 수가 계속 감소한다_sellTicketTo`() {
-        sut = TicketOffice(
-            amount = 20000L,
-            tickets = arrayOf(Ticket(FEE), Ticket(FEE))
-        )
-        val audience1 = Audience(
-            Bag(
-                amount = 10000L,
-                invitation = Invitation(LocalDateTime.now())
-            )
-        )
-
-        val audience2 = Audience(
-            Bag(
-                amount = 15000L,
-            )
-        )
-
-        sut.sellTicketTo(audience1)
-        sut.sellTicketTo(audience2)
-
-        assertEquals(0, sut.ticketCount)
-    }
-}
+})

@@ -12,6 +12,9 @@ class TicketOffice(
     val ticketCount: Int
         get() = tickets.size
 
+    val currentAmount: Long
+        get() = amount
+
     private fun minusAmount(amount: Long): Long {
         this.amount -= amount
 
@@ -27,5 +30,4 @@ class TicketOffice(
     fun sellTicketTo(audience: Audience) {
         plusAmount(audience.buy(ticket))
     }
-
 }
